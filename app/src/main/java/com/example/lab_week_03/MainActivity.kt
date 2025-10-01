@@ -5,16 +5,11 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.fragment.app.FragmentContainerView
 
-interface CoffeeListener {
-    fun onSelected(id: Int)
-}
-
-class MainActivity : AppCompatActivity(), CoffeeListener {
+// The CoffeeListener interface is no longer needed
+class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // --- THIS LINE IS NOW CORRECTED ---
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.fragment_container)) { v, insets ->
@@ -22,18 +17,5 @@ class MainActivity : AppCompatActivity(), CoffeeListener {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                .add(R.id.fragment_container, ListFragment())
-                .commit()
-        }
-    }
-
-    override fun onSelected(id: Int) {
-        val detailFragment = DetailFragment.newInstance(id)
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, detailFragment)
-            .addToBackStack(null)
-            .commit()
     }
 }
