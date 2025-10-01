@@ -5,7 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
+import androidx.navigation.findNavController
 
 class DetailFragment : Fragment() {
     private val coffeeTitle: TextView?
@@ -21,14 +23,21 @@ class DetailFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_detail, container, false)
     }
 
-    // ADD THIS FUNCTION to get the coffee ID argument
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val coffeeId = arguments?.getInt(COFFEE_ID, 0) ?: 0
+        val coffeeId = arguments?.getInt(ListFragment.COFFEE_ID, 0) ?: 0
         setCoffeeData(coffeeId)
+
+        // ADD THIS LOGIC FOR THE BACK BUTTON
+        val backButton = view.findViewById<Button>(R.id.button_back)
+        backButton.setOnClickListener {
+            // This tells the NavController to go back to the previous screen (ListFragment)
+            it.findNavController().navigateUp()
+        }
     }
 
     fun setCoffeeData(id: Int) {
+        // ADD THE NEW BRANCHES FOR THE NEW COFFEES
         when (id) {
             R.id.affogato -> {
                 coffeeTitle?.text = getString(R.string.affogato_title)
@@ -42,17 +51,14 @@ class DetailFragment : Fragment() {
                 coffeeTitle?.text = getString(R.string.latte_title)
                 coffeeDesc?.text = getString(R.string.latte_desc)
             }
-        }
-    }
-
-    // ADD THIS companion object to create new instances of the fragment
-    companion object {
-        private const val COFFEE_ID = "COFFEE_ID"
-        fun newInstance(coffeeId: Int) =
-            DetailFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(COFFEE_ID, coffeeId)
-                }
+            R.id.espresso -> {
+                coffeeTitle?.text = getString(R.string.espresso_title)
+                coffeeDesc?.text = getString(R.string.espresso_desc)
             }
+            R.id.mocha -> {
+                coffeeTitle?.text = getString(R.string.mocha_title)
+                coffeeDesc?.text = getString(R.string.mocha_desc)
+            }
+        }
     }
 }

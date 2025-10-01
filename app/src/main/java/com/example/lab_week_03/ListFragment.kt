@@ -5,7 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.findNavController // <-- REQUIRED IMPORT FOR findNavController()
+import androidx.navigation.findNavController
 
 class ListFragment : Fragment() {
 
@@ -13,23 +13,24 @@ class ListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_list, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        // ADD THE NEW VIEW IDS TO THIS LIST
         val coffeeList = listOf<View>(
             view.findViewById(R.id.affogato),
             view.findViewById(R.id.americano),
-            view.findViewById(R.id.latte)
+            view.findViewById(R.id.latte),
+            view.findViewById(R.id.espresso),
+            view.findViewById(R.id.mocha)
         )
 
         coffeeList.forEach { coffee ->
             val fragmentBundle = Bundle()
             fragmentBundle.putInt(COFFEE_ID, coffee.id)
 
-            // Set the click listener to navigate using the action defined in nav_graph.xml
             coffee.setOnClickListener {
                 it.findNavController().navigate(R.id.coffee_id_action, fragmentBundle)
             }
